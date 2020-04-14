@@ -13,6 +13,7 @@ import static javax.persistence.CascadeType.PERSIST;
  * @author eyvind
  */
 @Entity
+@Table(name = "FAMILY")
 public class Family implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -21,6 +22,7 @@ public class Family implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String description;
+
     @OneToMany(cascade=PERSIST, mappedBy="family")
     private List<PersonReal> persons=new ArrayList();
 

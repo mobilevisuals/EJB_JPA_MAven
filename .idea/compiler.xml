@@ -6,8 +6,8 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="Ejb_mod" />
         <module name="web_mod" />
+        <module name="Ejb_mod" />
       </profile>
     </annotationProcessing>
   </component>

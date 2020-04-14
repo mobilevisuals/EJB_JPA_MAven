@@ -23,6 +23,7 @@ public class PersonReal implements Serializable {
     private Long id;
     private String fname;
     private String lname;
+
     @ManyToOne(cascade=PERSIST)
     private Family family;
 

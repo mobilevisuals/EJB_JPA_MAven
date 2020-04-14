@@ -11,7 +11,6 @@ import javax.persistence.Query;
 import javax.persistence.TransactionRequiredException;
 
 /**
- *
  * @author eyvind
  */
 @Stateless
@@ -24,7 +23,6 @@ public class PersonHandler implements PersonHandlerLocal {
     private EntityManager em;
 
 
-
     @Override
     public void fillDB() {
         //containern hanterar sina egna transaktioner
@@ -32,10 +30,10 @@ public class PersonHandler implements PersonHandlerLocal {
         //och detta är ju en EJB
         //så vi får inte själva hantera transaktioner:
         //¨ em.getTransaction().begin();
-        Query q = em.createQuery("select o from Family o");//~~test out
-        int size = q.getResultList().size();//~~test out
-        if (size < 1)//~~test out
-       {
+        Query q = em.createQuery("select o from Family o");
+        int size = q.getResultList().size();
+        if (size < 1)
+        {
 
             Family f = new Family();
             f.setDescription("testers");
@@ -49,7 +47,7 @@ public class PersonHandler implements PersonHandlerLocal {
                 members.add(person);
             }
             f.setPersons(members);
-
+            persist(f);
             //containern hanterar sina egna transaktioner, så
             //vi får inte själva hantera dem:
             //¨  em.getTransaction().commit();
@@ -92,17 +90,21 @@ public class PersonHandler implements PersonHandlerLocal {
             PersonReal user = (PersonReal) q.getSingleResult();
             em.remove(user);
 
+        } catch (NoResultException e) {
+            e.printStackTrace();
+            status = false;
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
             status = false;
-        }
-        catch (TransactionRequiredException e1) {
+        } catch (TransactionRequiredException e1) {
             e1.printStackTrace();
+            status = false;
+        } catch (Exception e) {
+            e.printStackTrace();
             status = false;
         }
         return status;
     }
-
 
 
     //metoder för affärslogik ska också vara i EJB;
@@ -120,7 +122,7 @@ public class PersonHandler implements PersonHandlerLocal {
 
     //this is how to update with JPQL:
     @Override
-    public boolean changeName(String fname,String newFirstName) {
+    public boolean changeName(String fname, String newFirstName) {
         boolean status = true;
 
         PersonReal user = new PersonReal();
@@ -138,11 +140,6 @@ public class PersonHandler implements PersonHandlerLocal {
         //bra att returnera status ifrån metoder istället för att bara göra dem till void
         return status;
     }
-
-
-
-
-
 
 
 }
